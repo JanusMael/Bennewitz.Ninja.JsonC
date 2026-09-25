@@ -1,0 +1,9 @@
+{
+  "description": "A comment- and formatting-preserving JSONC reader and edit-based writer for .NET.",
+  "homepage": "",
+  "topics": ["csharp", "dotnet", "nuget", "jsonc", "json", "configuration"],
+  "requiredChecks": ["build", "pack", "conventions"],
+  "content": [],
+  "undocumented": {},
+  "trimming": "required"
+}

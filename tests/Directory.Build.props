@@ -1,0 +1,31 @@
+<Project>
+  <!-- MSBuild applies only the CLOSEST Directory.Build.props, so the repository root's settings
+       have to be imported explicitly. Without this line every test project silently loses the
+       root's TargetFramework, nullable settings and AutoVersioning reference — and nothing says
+       so, because the defaults it falls back to still compile. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- xunit v3 test projects are executables. -->
+    <OutputType>Exe</OutputType>
+    <!-- A test project's own missing XML docs are noise. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <!-- MessageAssert, OrdinalAssert and the DoNotParallelize collection: the helpers the MSTest
+         conversion emitted, which the moved tests call. One emitted file, linked into every test
+         project. Regenerate it with the converter's `emit-helpers` (Bennewitz.Ninja.Templates
+         scripts/mstest-to-xunit.cs); never edit it by hand. New tests use xUnit's Assert directly. -->
+    <Compile Include="$(MSBuildThisFileDirectory)Shared/MessageAssert.cs" Link="Shared/MessageAssert.cs" />
+    <Using Include="Bennewitz.Ninja.Testing" />
+  </ItemGroup>
+</Project>
