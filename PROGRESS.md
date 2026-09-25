@@ -5,10 +5,40 @@ changing moves out rather than piling up.
 
 ## Published
 
-Nothing yet on nuget.org. Versions up to `2026.3.925` exist only on ClaudeForge's GitHub Packages
-feed, from before the move.
+| Version | Released | What it is |
+|---|---|---|
+| `2026.3.926` | 2026-09-25, 23:35 UTC | The first release on nuget.org: the same code as ClaudeForge's `2026.3.925`, published from this repository. What changed for a consumer is in its [release notes](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/releases/tag/v2026.3.926) |
 
-## On `main`, not yet released
+Versions up to `2026.3.925` exist only on ClaudeForge's GitHub Packages feed, from before the move.
+
+Verified against nuget.org, not the workflow: the flat container lists `2026.3.926`, and the
+downloaded package's `lib/net10.0/JsonC.dll` carries `PublicVersion` `2026.3.926`, commit `2ea05fd`
+and `[AssemblyMetadata("IsTrimmable", "True")]`. Decompiled beside `2026.3.925`'s, it has the same
+types, members and method bodies; only the build stamps and `InternalsVisibleTo` differ.
+
+## Drift from ClaudeForge `plans/00007`
+
+- **Released on the day decision 4 ruled out.** The maintainer chose to release `2026.3.926` on
+  2026-09-25, knowing the build would stamp the assembly and file version `2026.3.925.2335`, the
+  build's UTC time. `2026.3.926` is spent a day early, so the next version is `2026.3.927`, on
+  2026-09-27 at the earliest.
+
+## On GitHub and nuget.org
+
+Set up on 2026-09-25. The template is applied and nothing needs generating again: this repository
+was made from Templates `2026.3.925`, and no remaining step needs it installed.
+
+| What | State | Verified by |
+|---|---|---|
+| Repository | [JanusMael/Bennewitz.Ninja.JsonC](https://github.com/JanusMael/Bennewitz.Ninja.JsonC), public | `git ls-remote origin main` showed the local `main` hash |
+| Conventions | applied: settings, topics, security toggles, and the `main` and `release-tags` rulesets | `check --admin` conforms; CI's `conventions` job is green |
+| `NUGET_USER` | a repository variable, `JanusMael` | `gh variable get NUGET_USER` reads it back |
+| Trusted publishing | one policy on nuget.org, created by the maintainer, pattern `Bennewitz.Ninja.JsonC` | the preflight, Release run `36193370799`, and the first release, run `36201599291`, which pushed with it |
+
+`main` takes pull requests only: its ruleset requires `build`, `pack` and `conventions`. Only a
+repository admin can create, move or delete a `v*` tag.
+
+## The import
 
 The initial import (ClaudeForge `plans/00007`, Phase A): generated from Templates `2026.3.925` with
 `dotnet new bbpkg -n JsonC --RepoOwner JanusMael`, the template's sample replaced by JsonC's source
@@ -31,53 +61,10 @@ Beyond the template, the import needed three things the moved tests and source d
   source moved unchanged. ClaudeForge's project suppressed it too.
 - `src/JsonC/AssemblyInfo.cs`, granting `JsonC.Tests` the internal `JsoncEditor.Quote`.
 
-## On GitHub and nuget.org
-
-Set up on 2026-09-25. The template is applied and nothing needs generating again: this repository
-was made from Templates `2026.3.925`, and no remaining step needs it installed.
-
-| What | State | Verified by |
-|---|---|---|
-| Repository | [JanusMael/Bennewitz.Ninja.JsonC](https://github.com/JanusMael/Bennewitz.Ninja.JsonC), public | `git ls-remote origin main` showed the local `main` hash |
-| Conventions | applied: settings, topics, security toggles, and the `main` and `release-tags` rulesets | `check --admin` conforms; CI's `conventions` job is green |
-| `NUGET_USER` | a repository variable, `JanusMael` | `gh variable get NUGET_USER` reads it back |
-| Trusted publishing | one policy on nuget.org, created by the maintainer, pattern `Bennewitz.Ninja.JsonC` | the preflight, Release run `36193370799`: the token exchange succeeded and `check --release` conforms |
-
-⚠ **The preflight proves the login, not the pattern.** The exchange succeeds before any package id
-is considered, so only the first push shows that the policy covers `Bennewitz.Ninja.JsonC`.
-
-`main` takes pull requests only: its ruleset requires `build`, `pack` and `conventions`. Only a
-repository admin can create, move or delete a `v*` tag.
-
 ## Resume here
 
-What is left of ClaudeForge `plans/00007` Phase A is the first release, verifying it, and telling
-ClaudeForge. The plan is approved and frozen in
-[JanusMael/ClaudeForge](https://github.com/JanusMael/ClaudeForge/blob/main/plans/00007-jsonc-moves-to-its-own-repository.md);
-read it before starting, and record any drift here, never in the plan. The family's rules are
-[`docs/repository-conventions.md`](https://github.com/JanusMael/Bennewitz.Ninja.Templates/blob/main/docs/repository-conventions.md)
-in Bennewitz.Ninja.Templates. The release runbook is [`docs/publishing.md`](docs/publishing.md).
-
-| # | Step | Who | Done when |
-|---|---|---|---|
-| 1 | First release: `git tag -a vYYYY.Q.MMDD -m "Bennewitz.Ninja.JsonC YYYY.Q.MMDD"` on the head of `main`, and push the tag. The date **must be after 2026-09-25**, so `v2026.3.926` at the earliest | maintainer | the Release run is green; then step 2 |
-| 2 | Verify against **nuget.org**, never the workflow: the flat container `https://api.nuget.org/v3-flatcontainer/bennewitz.ninja.jsonc/index.json` lists the version; the downloaded `.nupkg` holds `lib/net10.0/JsonC.dll` whose informational version carries the same stamp and which carries `[AssemblyMetadata("IsTrimmable", "True")]` | agent | both read off the downloaded package, not inferred |
-| 3 | Tell ClaudeForge. Move the version into **Published** above, then tell the session in `C:\c\cl\OpenForge2k` which version is live (a message if one is running, otherwise a comment on the ClaudeForge PR or issue tracking `plans/00007`). That repository does Phase B | agent | ClaudeForge has the version |
-
-⛔ **Nothing may be published at `2026.3.925` or earlier.** That version already exists on
-ClaudeForge's GitHub feed with different metadata, and a version number must never mean two
-different packages.
-
-⛔ **A published version is permanent, and the date allows one release per day.** Never re-tag to
-fix a failed run: fix forward, per `docs/publishing.md`.
-
-⛔ **The move changes no behaviour.** No API or source change to JsonC before the first release. The
-point of the first nuget.org version is to be the same code as ClaudeForge's `2026.3.925`, under new
-provenance. Improvements come after that release, in their own versions.
-
-⚠ **A 401 at the token exchange: read `NUGET_USER` first** (`gh variable get NUGET_USER`), then
-work the rest of the list in `docs/publishing.md`. On 2026-09-21 the Templates release burned six
-runs on the policy fields while the fault was the value itself.
-
-⚠ If `git push` asks for credentials or picks the wrong account, push with
-`git -c credential.helper= -c "credential.helper=!gh auth git-credential" push …`.
+Phase A of ClaudeForge `plans/00007` is done. On 2026-09-25 the ClaudeForge session was sent a message
+saying `2026.3.926` is live, with what its Phase B needs to know; consuming the package and removing
+JsonC from ClaudeForge is that repository's work. Nothing is pending here. A change to JsonC now
+ships in a version of its own, `2026.3.927` at the earliest. The release runbook is
+[`docs/publishing.md`](docs/publishing.md).
