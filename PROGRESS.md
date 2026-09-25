@@ -38,8 +38,8 @@ rest of ClaudeForge `plans/00007` Phase A. The plan is approved and frozen in
 [JanusMael/ClaudeForge](https://github.com/JanusMael/ClaudeForge/blob/main/plans/00007-jsonc-moves-to-its-own-repository.md);
 read it before starting, and record any drift here, never in the plan.
 
-The template is already applied and nothing needs generating again. Templates `2026.3.925` is
-installed (`dotnet new list bbpkg`), and this repository was made from it. The family's rules are
+The template is already applied and nothing needs generating again. This repository was made from
+Templates `2026.3.925`; no step below needs it installed, and it no longer is. The family's rules are
 [`docs/repository-conventions.md`](https://github.com/JanusMael/Bennewitz.Ninja.Templates/blob/main/docs/repository-conventions.md)
 in Bennewitz.Ninja.Templates. The release runbook is [`docs/publishing.md`](docs/publishing.md).
 
