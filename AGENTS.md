@@ -74,6 +74,12 @@ one of the two is done.
 
 **Releasing:** `docs/publishing.md`.
 
+**Changing or removing public API: tell ClaudeForge before the version that carries it ships.**
+Send it to a session working in ClaudeForge by message, or open an issue in
+[JanusMael/ClaudeForge](https://github.com/JanusMael/ClaudeForge) when none is running.
+`AgentForge.Core` pins an exact JsonC version and takes an API change on purpose, so it needs to
+know before the release, not after.
+
 **Avalonia and drivable-UI lessons go to XamlQuality.** `docs/avalonia-gotchas.md` and
 `docs/ai-drivable-ui.md` in
 [JanusMael/Bennewitz.Ninja.XamlQuality](https://github.com/JanusMael/Bennewitz.Ninja.XamlQuality)

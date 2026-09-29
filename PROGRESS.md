@@ -20,8 +20,7 @@ types, members and method bodies; only the build stamps and `InternalsVisibleTo`
 
 - **Released on the day decision 4 ruled out.** The maintainer chose to release `2026.3.926` on
   2026-09-25, knowing the build would stamp the assembly and file version `2026.3.925.2335`, the
-  build's UTC time. `2026.3.926` is spent a day early, so the next version is `2026.3.927`, on
-  2026-09-27 at the earliest.
+  build's UTC time. `2026.3.926` was spent a day early.
 
 ## On GitHub and nuget.org
 
@@ -63,8 +62,11 @@ Beyond the template, the import needed three things the moved tests and source d
 
 ## Resume here
 
-Phase A of ClaudeForge `plans/00007` is done. On 2026-09-25 the ClaudeForge session was sent a message
-saying `2026.3.926` is live, with what its Phase B needs to know; consuming the package and removing
-JsonC from ClaudeForge is that repository's work. Nothing is pending here. A change to JsonC now
-ships in a version of its own, `2026.3.927` at the earliest. The release runbook is
-[`docs/publishing.md`](docs/publishing.md).
+Phase A of ClaudeForge `plans/00007` is done, and nothing is pending here. On 2026-09-28 ClaudeForge
+confirmed it needs no change from JsonC: `AgentForge.Core` uses only `JsoncDocument`,
+`JsoncEditor` and `JsoncValueKind`. Its Phase B pins `2026.3.926` and routes the id to nuget.org
+and its GitHub feed until its next AgentForge release. It stays on `2026.3.926` until it chooses to
+move, and will say when that AgentForge release is out; nothing here depends on it.
+
+A change to JsonC ships in a version of its own. A public API change is told to ClaudeForge before it
+ships, per `AGENTS.md`. The release runbook is [`docs/publishing.md`](docs/publishing.md).
