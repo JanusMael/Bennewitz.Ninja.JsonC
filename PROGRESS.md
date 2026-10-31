@@ -79,7 +79,12 @@ On 2026-10-31, closing #4 and #6:
   itself. The release runbook stays in `docs/publishing.md`, which `AGENTS.md` names.
 
 Build with no warnings, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms, as CI
-runs them. The package's README changes, so a release follows on the maintainer's word.
+runs them. Released as `2026.4.1031` the same day, on the maintainer's word: tag `v2026.4.1031` on
+`48b7ccf`, release run `41231823839`, one package pushed.
+
+Then, in the tests alone, Templates' xunit part 2: xunit.v3 `4.0.2`, and TrxReport gone, which
+nothing asked a `.trx` of. `Parallelization.cs`'s `CollectionPerClass` still compiles on 4.x; only
+`DisableTestParallelization` became an error. 80 of 80 tests. The package does not change.
 
 ## Resume here
 
