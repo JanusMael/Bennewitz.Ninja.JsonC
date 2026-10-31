@@ -74,8 +74,9 @@ On 2026-10-31, closing #4 and #6:
 - `PublicVersion` moved from `Directory.Build.props` to that `Directory.Build.targets`, as the
   template's is. In the props file `Version` has no value yet, so a local build recorded an empty
   `PublicVersion`; a release, which passes `-p:Version=`, was not affected.
-- The packed README links absolutely, which `assert-packages` now requires: nuget.org resolves a
-  relative link against itself.
+- The packed README drops its *Releasing* section, as the template's has, and links the licence
+  absolutely, which `assert-packages` now requires: nuget.org resolves a relative link against
+  itself. The release runbook stays in `docs/publishing.md`, which `AGENTS.md` names.
 
 Build with no warnings, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms, as CI
 runs them. The package's README changes, so a release follows on the maintainer's word.
