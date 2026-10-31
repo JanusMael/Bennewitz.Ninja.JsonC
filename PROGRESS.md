@@ -60,6 +60,26 @@ Beyond the template, the import needed three things the moved tests and source d
   source moved unchanged. ClaudeForge's project suppressed it too.
 - `src/JsonC/AssemblyInfo.cs`, granting `JsonC.Tests` the internal `JsoncEditor.Quote`.
 
+## Synced to Templates `2026.4.1031`
+
+On 2026-10-31, closing #4 and #6:
+
+- `scripts/repo-conventions.cs` and `scripts/assert-packages.cs` are that release's.
+- The retired `"trimming"` key is gone from `repository.json`. The repository still trims through
+  its projects: `src/Directory.Build.props` sets `IsTrimmable` and `EnableTrimAnalyzer`.
+- The family's friend grants: `AssemblyInfo.InternalsVisibleTo.cs`, written by `grants`, and an
+  empty `.External.cs`, linked into every project by a root `Directory.Build.targets`, the
+  template's. `src/JsonC/AssemblyInfo.cs` and its grant to `JsonC.Tests` are gone: the
+  solution-wide file grants the same.
+- `PublicVersion` moved from `Directory.Build.props` to that `Directory.Build.targets`, as the
+  template's is. In the props file `Version` has no value yet, so a local build recorded an empty
+  `PublicVersion`; a release, which passes `-p:Version=`, was not affected.
+- The packed README links absolutely, which `assert-packages` now requires: nuget.org resolves a
+  relative link against itself.
+
+Build with no warnings, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms, as CI
+runs them. The package's README changes, so a release follows on the maintainer's word.
+
 ## Resume here
 
 Phase A of ClaudeForge `plans/00007` is done, and nothing is pending here. On 2026-09-28 ClaudeForge

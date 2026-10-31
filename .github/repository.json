@@ -4,6 +4,5 @@
   "topics": ["csharp", "dotnet", "nuget", "jsonc", "json", "configuration"],
   "requiredChecks": ["build", "pack", "conventions"],
   "content": [],
-  "undocumented": {},
-  "trimming": "required"
+  "undocumented": {}
 }

@@ -13,12 +13,12 @@ dotnet add package Bennewitz.Ninja.JsonC
 
 ## Releasing
 
-See [docs/publishing.md](docs/publishing.md). The short version:
+See [docs/publishing.md](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/blob/main/docs/publishing.md). The short version:
 
 1. Add the `NUGET_USER` repository **variable**, not a secret: your nuget.org **profile name**,
    not an email.
 2. Create **one** trusted-publishing policy whose glob patterns cover every id in
-   [`packages.push`](packages.push) and match nothing in [`packages.local`](packages.local).
+   [`packages.push`](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/blob/main/packages.push) and match nothing in [`packages.local`](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/blob/main/packages.local).
 3. Run **Release** → *Run workflow* with the version **blank**. That logs in and stops, proving the
    credentials without publishing.
 4. Tag `vYYYY.Q.MMDD` and push.
@@ -29,4 +29,4 @@ after the first has already published permanently.
 
 ## Licence
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/blob/main/LICENSE).
