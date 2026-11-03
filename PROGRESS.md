@@ -8,6 +8,7 @@ changing moves out rather than piling up.
 | Version | Released | What it is |
 |---|---|---|
 | `2026.3.926` | 2026-09-25, 23:35 UTC | The first release on nuget.org: the same code as ClaudeForge's `2026.3.925`, published from this repository. What changed for a consumer is in its [release notes](https://github.com/JanusMael/Bennewitz.Ninja.JsonC/releases/tag/v2026.3.926) |
+| `2026.4.1031` | 2026-10-31, 18:57 UTC | The sync to Templates `2026.4.1031`, below. The flat container lists it, and the GitHub release carries the nupkg |
 
 Versions up to `2026.3.925` exist only on ClaudeForge's GitHub Packages feed, from before the move.
 
@@ -85,6 +86,19 @@ runs them. Released as `2026.4.1031` the same day, on the maintainer's word: tag
 Then, in the tests alone, Templates' xunit part 2: xunit.v3 `4.0.2`, and TrxReport gone, which
 nothing asked a `.trx` of. `Parallelization.cs`'s `CollectionPerClass` still compiles on 4.x; only
 `DisableTestParallelization` became an error. 80 of 80 tests. The package does not change.
+
+## Synced to Templates `2026.4.1103`
+
+On 2026-11-03:
+
+- `scripts/repo-conventions.cs` is that release's, which also checks that markdown is checked out
+  as LF. The root `.gitattributes` already does that.
+- `Microsoft.VisualStudio.Threading.Analyzers` `18.12.1`, referenced privately from
+  `Directory.Build.props`, with only `VSTHRD101` and `VSTHRD110` on: the family's decision of
+  2026-11-03. Neither reports anything here.
+
+Build with warnings as errors, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms,
+as CI runs them. The packed nuspec gains no dependency. The package does not change.
 
 ## Resume here
 
