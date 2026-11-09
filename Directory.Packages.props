@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Versioning">
-    <PackageVersion Include="Bennewitz.Ninja.AutoVersioning" Version="2026.3.916" />
+    <PackageVersion Include="Bennewitz.Ninja.AutoVersioning" Version="2026.4.1031" />
   </ItemGroup>
 
   <ItemGroup Label="Analysis">
@@ -18,6 +18,6 @@
     <!-- xunit.v3 on Microsoft.Testing.Platform — see global.json. The VSTest bridge packages are
          deliberately absent, and so is TrxReport: nothing asks for a .trx, and it would have to
          match the platform version xunit takes on every bump. -->
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
   </ItemGroup>
 </Project>

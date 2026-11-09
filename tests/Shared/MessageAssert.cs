@@ -333,10 +333,3 @@ internal static class ElementAssert
         }
     }
 }
-
-/// <summary>
-/// The collection a converted <c>[DoNotParallelize]</c> class joins. Its tests run after every
-/// parallel collection has finished, one at a time — MSTest's meaning for the attribute.
-/// </summary>
-[CollectionDefinition("DoNotParallelize", DisableParallelization = true)]
-public sealed class DoNotParallelizeDefinition;
