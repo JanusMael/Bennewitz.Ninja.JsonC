@@ -100,6 +100,19 @@ On 2026-11-03:
 Build with warnings as errors, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms,
 as CI runs them. The packed nuspec gains no dependency. The package does not change.
 
+## Synced to Templates `2026.4.1109`
+
+On 2026-11-09. The scripts were already that release's; it moves the pins:
+
+- AutoVersioning `2026.3.916` to `2026.4.1031`, whose diagnostics are `BNAV00` to `BNAV04` from
+  `2026.3.928` on.
+- xunit.v3 `4.0.2` to `4.0.3`, whose analyzers report a collection definition nothing joins
+  (xUnit1073). `tests/Shared/MessageAssert.cs` held the converter's `DoNotParallelize` definition,
+  which no class here joins, so it is gone; Templates' converter now emits it suppressed.
+
+Build with warnings as errors, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms,
+as CI runs them. The package does not change.
+
 ## Resume here
 
 Phase A of ClaudeForge `plans/00007` is done, and nothing is pending here. On 2026-09-28 ClaudeForge
