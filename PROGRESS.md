@@ -134,15 +134,34 @@ BNAQ1002, BNAQ1004 and BNAQ1005 over the compiled `JsonC.dll`.
 Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check --offline`, which
 conforms. The package does not change.
 
+## The template's release, through `release-target.cs`
+
+On 2026-11-10, the other half of what Inspections brought to `bbpkg`. `release.yml` now resolves
+every release through `scripts/release-target.cs` before anything is built, which refuses a tag of
+the wrong kind and a version that is not `YYYY.Q.MMDD` with its date's quarter. JsonC declares no
+families, so a release is what it was: a `v<version>` tag, every id in `packages.push`, GitHub's
+generated notes.
+
+- `release.yml`, `scripts/release-target.cs`, `docs/publishing.md`, `scripts/AGENTS.md` and
+  `PackagingTests` are Templates `2026.4.1109`'s, tokens filled in. `PackagingTests` now checks that
+  the workflow resolves through the script, and counts a project packable unless it says otherwise,
+  where it counted only an explicit `IsPackable`. With the old workflow restored it fails.
+- `AGENTS.md` takes the template's rows for the release, the packed README's links and the friend
+  grants, and its `grants` command.
+- `release-target.cs resolve`, run locally: `v2026.4.1110` resolves to `2026.4.1110` and
+  `Bennewitz.Ninja.JsonC`; `v2026.3.1110` is refused for its quarter, `json/v2026.4.1110` as a family
+  tag where none is declared, and `v2026.4.1110.1` for having four parts.
+- The blank-version preflight, dispatched on the branch before the merge: Release run `42905820625`
+  at `cd6a019` passed, the token exchange succeeded and `check --release` conforms.
+
+Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check --offline`, which
+conforms. The package does not change.
+
 ## Resume here
 
-ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031` (its `JsonCVersion`, read
-on 2026-11-10). A public API change is told to ClaudeForge before it ships, per `AGENTS.md`.
-
-In flight, by the maintainer's decision of 2026-11-10: the rest of what Inspections brought to
-`bbpkg`, a `release.yml` that resolves every release through `scripts/release-target.cs`, which
-refuses a version that is not `YYYY.Q.MMDD` with its date's quarter, with the template's
-`PackagingTests` that check that workflow. Its own pull request, then a blank-version preflight.
+Nothing is pending here. ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031`
+(its `JsonCVersion`, read on 2026-11-10). A public API change is told to ClaudeForge before it
+ships, per `AGENTS.md`.
 
 A change to JsonC ships in a version of its own. The release runbook is
 [`docs/publishing.md`](docs/publishing.md).
