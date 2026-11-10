@@ -57,8 +57,9 @@ public sealed class PackagingTests
     }
 
     /// <summary>
-    /// No release step globs, and both publishing steps take their list from
-    /// <c>packages.push</c> rather than repeating it.
+    /// No release step globs, and both publishing steps take their list from what
+    /// <c>scripts/release-target.cs</c> resolves, which reads <c>packages.push</c>, or the family's
+    /// entry in <c>.github/repository.json</c>, rather than repeating it.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -81,12 +82,13 @@ public sealed class PackagingTests
         string workflow = ReleaseWorkflow();
 
         Assert.DoesNotContain("*.nupkg", workflow, StringComparison.Ordinal);
+        Assert.Contains("scripts/release-target.cs -- resolve", workflow, StringComparison.Ordinal);
 
-        int declarationReads = workflow.Split("packages.push").Length - 1;
+        int idReads = workflow.Split("read -ra ids <<< \"$IDS\"").Length - 1;
         Assert.True(
-            declarationReads >= 3,
-            "The push, the GitHub release and the preflight summary should each read packages.push; " +
-            $"found {declarationReads} reference(s). A step that stops reading it stops publishing what is declared.");
+            idReads == 2,
+            $"The push and the GitHub release should each read the resolved IDS; found {idReads}. " +
+            "A step that stops reading them stops publishing what is declared.");
     }
 
     /// <summary>
@@ -175,8 +177,11 @@ public sealed class PackagingTests
         {
             XDocument document = XDocument.Load(project);
 
-            bool packable = document.Descendants("IsPackable")
-                .Any(element => string.Equals(element.Value.Trim(), "true", StringComparison.OrdinalIgnoreCase));
+            // ⛔ Fails closed: a project is packable unless it says otherwise, because the SDK packs a
+            // class library by default. Counting only an explicit IsPackable=true missed exactly the
+            // project nobody classified. The last declaration wins, as it does in MSBuild.
+            bool packable = !string.Equals(
+                document.Descendants("IsPackable").LastOrDefault()?.Value.Trim(), "false", StringComparison.OrdinalIgnoreCase);
 
             if (!packable)
             {

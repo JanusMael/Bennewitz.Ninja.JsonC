@@ -27,7 +27,7 @@ repository to nuget.org, and no version exists on both.
 |---|---|
 | `src/` | The shipped projects. Every one is packable and declared in a package list |
 | `tests/` | The test projects, including the packaging guards and the AssemblyQuality rules |
-| `scripts/` | File-based apps: `assert-packages.cs` and `repo-conventions.cs` |
+| `scripts/` | File-based apps: `assert-packages.cs`, `release-target.cs` and `repo-conventions.cs` |
 | `docs/` | `publishing.md`, the release runbook |
 | `.github/` | The workflows, `repository.json`, and the pointer for tools that read `.github/` |
 
@@ -36,13 +36,14 @@ repository to nuget.org, and no version exists on both.
 | Invariant | Failure if broken | Guarded by |
 |---|---|---|
 | Every packable project's id is in exactly one of `packages.push` and `packages.local` | A package nobody chose is published, permanently | `PackagingTests`; `scripts/assert-packages.cs`; the release step `Assert packed matches declared` |
-| The release pushes the ids `packages.push` names and never globs `*.nupkg` | A new packable project is published by the next tag | `.github/workflows/release.yml`, step `Push to NuGet.org` |
+| The release pushes the ids `scripts/release-target.cs` resolves from `packages.push`, and never globs `*.nupkg` | A new packable project is published by the next tag | `.github/workflows/release.yml`, steps `Resolve what this release publishes` and `Push to NuGet.org`; `repo-conventions check` |
+| The README each package of `packages.push` carries links only absolutely, whatever the file is called | It is the package's page on nuget.org, where a relative link resolves against nuget.org and goes nowhere, permanently for that version | `scripts/assert-packages.cs`, in CI's `pack` job and the release |
 | Every shipped assembly declares itself trimmable | A consumer's trimmed publish keeps it whole and outside its trim analysis, and says nothing | `src/Directory.Build.props`; `TrimmableTests` |
 | The public surface exposes System.Text.Json's DOM only where it means to: `JsoncEditor.SetValue` and `SetValueEdits` take the value to write as a `JsonNode` | Any other public member that takes or returns a DOM type becomes something every consumer depends on | `Architecture/AssemblyQualityTests`, BNAQ1002, whose two findings are pinned |
 | Packages resolve from nuget.org only | A second source added later silently starts supplying packages | `NuGet.config`, `packageSourceMapping` |
 | Versions are pinned centrally | Two projects drift to different versions of one dependency | `Directory.Packages.props` |
 | Warnings are errors | A warning ships | `Directory.Build.props`; `ci.yml` builds with `-warnaserror` |
-| The version is the tag, `vYYYY.Q.MMDD` | The package and the tag disagree. A published version can never be replaced | `release.yml`, step `Resolve version and tag` |
+| The version is the tag, `vYYYY.Q.MMDD`, its quarter its date's | The package and the tag disagree. A published version can never be replaced | `scripts/release-target.cs`, run by `release.yml` before anything is built |
 | `NUGET_USER` is a repository **variable**, not a secret | A masked value hides why a trusted-publishing login fails | `release.yml`, step `Refuse to release without NUGET_USER` |
 | The repository meets the family conventions | Documentation or settings go missing unnoticed | `scripts/repo-conventions.cs`, run by CI |
 
@@ -53,7 +54,9 @@ dotnet build JsonC.slnx -c Release -warnaserror
 dotnet test --solution JsonC.slnx
 dotnet pack JsonC.slnx -c Release --output ./packages/Release
 dotnet run scripts/assert-packages.cs -- ./packages/Release
+dotnet run scripts/release-target.cs -- resolve --event push --ref v<version>
 dotnet run --file scripts/repo-conventions.cs -- check
+dotnet run --file scripts/repo-conventions.cs -- grants
 ```
 
 - Tests run on Microsoft.Testing.Platform (`global.json`), so `dotnet test` takes `--solution` and
@@ -68,6 +71,13 @@ dotnet run --file scripts/repo-conventions.cs -- check
 3. Widen the trusted-publishing policy's glob on nuget.org to cover a new `packages.push` id; see
    `docs/publishing.md`.
 4. Add it to the package table in `README.md`, and record it in `PROGRESS.md`.
+
+**Adding, removing or renaming a project:** run `repo-conventions grants`, which rewrites
+`AssemblyInfo.InternalsVisibleTo.cs`: every project grants its internals to every assembly this
+repository builds, so `internal` means solution-internal and what no other assembly may reach is
+`private`. Never declare a grant in a project; grants to another repository go in
+`AssemblyInfo.InternalsVisibleTo.External.cs`, by assembly name. A project that must stay out sets
+`<SolutionFriendGrants>false</SolutionFriendGrants>`. CI fails on a stale list or a stray grant.
 
 **Adding a top-level directory:** give it an `AGENTS.md` and a `CLAUDE.md` containing `@AGENTS.md`,
 or exempt it in `.github/repository.json` under `undocumented`, with the reason. CI fails until
