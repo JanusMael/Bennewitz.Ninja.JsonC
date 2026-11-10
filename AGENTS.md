@@ -26,7 +26,7 @@ repository to nuget.org, and no version exists on both.
 | Directory | What it holds |
 |---|---|
 | `src/` | The shipped projects. Every one is packable and declared in a package list |
-| `tests/` | The test projects, including the packaging guards |
+| `tests/` | The test projects, including the packaging guards and the AssemblyQuality rules |
 | `scripts/` | File-based apps: `assert-packages.cs` and `repo-conventions.cs` |
 | `docs/` | `publishing.md`, the release runbook |
 | `.github/` | The workflows, `repository.json`, and the pointer for tools that read `.github/` |
@@ -38,6 +38,7 @@ repository to nuget.org, and no version exists on both.
 | Every packable project's id is in exactly one of `packages.push` and `packages.local` | A package nobody chose is published, permanently | `PackagingTests`; `scripts/assert-packages.cs`; the release step `Assert packed matches declared` |
 | The release pushes the ids `packages.push` names and never globs `*.nupkg` | A new packable project is published by the next tag | `.github/workflows/release.yml`, step `Push to NuGet.org` |
 | Every shipped assembly declares itself trimmable | A consumer's trimmed publish keeps it whole and outside its trim analysis, and says nothing | `src/Directory.Build.props`; `TrimmableTests` |
+| The public surface exposes System.Text.Json's DOM only where it means to: `JsoncEditor.SetValue` and `SetValueEdits` take the value to write as a `JsonNode` | Any other public member that takes or returns a DOM type becomes something every consumer depends on | `Architecture/AssemblyQualityTests`, BNAQ1002, whose two findings are pinned |
 | Packages resolve from nuget.org only | A second source added later silently starts supplying packages | `NuGet.config`, `packageSourceMapping` |
 | Versions are pinned centrally | Two projects drift to different versions of one dependency | `Directory.Packages.props` |
 | Warnings are errors | A warning ships | `Directory.Build.props`; `ci.yml` builds with `-warnaserror` |

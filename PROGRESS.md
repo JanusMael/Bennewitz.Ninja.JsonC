@@ -113,13 +113,36 @@ On 2026-11-09. The scripts were already that release's; it moves the pins:
 Build with warnings as errors, 80 of 80 tests, pack, `assert-packages`, and `check`, which conforms,
 as CI runs them. The package does not change.
 
+## Inspections' AssemblyQuality checks
+
+On 2026-11-10. `bbpkg` gained `tests/<Stem>.Tests/Architecture/AssemblyQualityTests.cs` after this
+repository was generated, and the syncs above moved pins only, so it never arrived. Now it has:
+`Bennewitz.Ninja.AssemblyQuality` `2026.4.1031`, referenced by `JsonC.Tests`, runs BNAQ1001,
+BNAQ1002, BNAQ1004 and BNAQ1005 over the compiled `JsonC.dll`.
+
+- BNAQ1002's default set names `System.Text.Json.Nodes`, and `JsoncEditor.SetValue` and
+  `SetValueEdits` take a `JsonNode` by design. By the maintainer's decision of 2026-11-10 the test
+  pins those two findings, so any other DOM type in the public surface fails it. `AGENTS.md`
+  records the surface as an invariant.
+- Each rule that can fail here was made to: a canary adding a public method that returns a
+  `JsonObject` and a grant to an undeclared assembly reddened BNAQ1002 and BNAQ1005, and the suite
+  passed again without it.
+- `src/Directory.Build.props` now names `TrimmableTests`, which reads the trimmable mark, where it
+  named a `PackageMetadataTests` this repository never had. `NuGet.config` gains the template's
+  warning about a nested config's mapping.
+
+Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check --offline`, which
+conforms. The package does not change.
+
 ## Resume here
 
-Phase A of ClaudeForge `plans/00007` is done, and nothing is pending here. On 2026-09-28 ClaudeForge
-confirmed it needs no change from JsonC: `AgentForge.Core` uses only `JsoncDocument`,
-`JsoncEditor` and `JsoncValueKind`. Its Phase B pins `2026.3.926` and routes the id to nuget.org
-and its GitHub feed until its next AgentForge release. It stays on `2026.3.926` until it chooses to
-move, and will say when that AgentForge release is out; nothing here depends on it.
+ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031` (its `JsonCVersion`, read
+on 2026-11-10). A public API change is told to ClaudeForge before it ships, per `AGENTS.md`.
 
-A change to JsonC ships in a version of its own. A public API change is told to ClaudeForge before it
-ships, per `AGENTS.md`. The release runbook is [`docs/publishing.md`](docs/publishing.md).
+In flight, by the maintainer's decision of 2026-11-10: the rest of what Inspections brought to
+`bbpkg`, a `release.yml` that resolves every release through `scripts/release-target.cs`, which
+refuses a version that is not `YYYY.Q.MMDD` with its date's quarter, with the template's
+`PackagingTests` that check that workflow. Its own pull request, then a blank-version preflight.
+
+A change to JsonC ships in a version of its own. The release runbook is
+[`docs/publishing.md`](docs/publishing.md).
