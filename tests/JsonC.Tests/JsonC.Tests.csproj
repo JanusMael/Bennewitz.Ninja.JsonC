@@ -3,4 +3,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\JsonC\JsonC.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- AssemblyQuality's rules, run over the library's compiled assembly. -->
+    <PackageReference Include="Bennewitz.Ninja.AssemblyQuality" />
+  </ItemGroup>
 </Project>
