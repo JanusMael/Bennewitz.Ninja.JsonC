@@ -1,4 +1,5 @@
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -36,6 +37,8 @@ public static class JsoncEditor
     /// member appends it to the innermost existing object on the path, indented to match
     /// that object's own members.
     /// </remarks>
+    [SuppressMessage("Bennewitz.Ninja.CodeQuality", "BNCQ1002",
+        Justification = "The value to write is a JsonNode by design, the maintainer's decision of 2026-11-10; AssemblyQualityTests pins the same finding.")]
     public static string SetValue(string text, string path, JsonNode? value)
     {
         JsoncDocument document = JsoncDocument.Parse(text);
@@ -57,6 +60,8 @@ public static class JsoncEditor
     /// so a caller batching several changes can collect edits and apply once — applying
     /// one at a time would invalidate the spans of the rest.
     /// </summary>
+    [SuppressMessage("Bennewitz.Ninja.CodeQuality", "BNCQ1002",
+        Justification = "The value to write is a JsonNode by design, the maintainer's decision of 2026-11-10; AssemblyQualityTests pins the same finding.")]
     public static IReadOnlyList<TextEdit> SetValueEdits(JsoncDocument document, string path, JsonNode? value)
     {
         ArgumentNullException.ThrowIfNull(document);
