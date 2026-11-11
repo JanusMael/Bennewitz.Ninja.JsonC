@@ -157,6 +157,25 @@ generated notes.
 Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check --offline`, which
 conforms. The package does not change.
 
+## Synced to Templates `2026.4.1111`
+
+On 2026-11-11, on the maintainer's word, from the Templates session.
+
+- `scripts/repo-conventions.cs` is that release's. It also fails two things:
+  - a repository whose `packages.push` names an id but whose release does not resolve through
+    `scripts/release-target.cs`;
+  - a repository that does not pin `Bennewitz.Ninja.AssemblyQuality`.
+
+  This repository meets both, since #11 and #12.
+- `Bennewitz.Ninja.CodeQuality` `2026.4.1104` is referenced privately, every rule at its default, the
+  family's decision of 2026-11-10. It reported two `BNCQ1002` findings, `JsoncEditor.SetValue` and
+  `SetValueEdits` taking a `JsonNode`: the same two that `AssemblyQualityTests` pins for BNAQ1002,
+  by design. Each is suppressed on its method with that reason, and any other DOM type in the public
+  surface still fails the build.
+
+Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check`, which conforms,
+as CI runs them. The package does not change.
+
 ## Resume here
 
 Nothing is pending here. ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031`
