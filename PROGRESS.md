@@ -176,6 +176,25 @@ On 2026-11-11, on the maintainer's word, from the Templates session.
 Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check`, which conforms,
 as CI runs them. The package does not change.
 
+## Synced to Templates `2026.4.1113`
+
+On 2026-11-13, on the maintainer's word, from the Templates session.
+
+- `scripts/release-target.cs` and `scripts/repo-conventions.cs` are that release's, byte for byte.
+  `resolve` now refuses a version below the newest nuget.org lists for `Bennewitz.Ninja.JsonC`,
+  unless nuget.org already lists it, and both read MSBuild's `-getProperty` JSON from the first `{`
+  to the last `}`. `repo-conventions check` also asks for a `Bennewitz.Ninja.CodeQuality` pin,
+  which this repository has.
+- `Bennewitz.Ninja.CodeQuality` `2026.4.1104` to `2026.4.1111`. It reports nothing new; the two
+  `BNCQ1002` suppressions on `JsoncEditor.SetValue` and `SetValueEdits` stand as they were.
+- `release.yml`'s resolve comment, `AGENTS.md`'s invariants and `scripts/AGENTS.md` say the same.
+- `release-target.cs resolve`, run locally against nuget.org, which lists `2026.3.926` and
+  `2026.4.1031`: `v2026.4.1113` resolves; `v2026.4.1001` and `v2026.3.925` are refused for being
+  below `2026.4.1031`; `v2026.4.1031` passes as a re-run whose push is skipped.
+
+Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check`, which conforms,
+as CI runs them. The package does not change.
+
 ## Resume here
 
 Nothing is pending here. ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031`
