@@ -195,6 +195,21 @@ On 2026-11-13, on the maintainer's word, from the Templates session.
 Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check`, which conforms,
 as CI runs them. The package does not change.
 
+## Synced to Templates `2026.4.1114`
+
+On 2026-11-16, on the maintainer's word, from the Templates session.
+
+- `Bennewitz.Ninja.CodeQuality` `2026.4.1111` to `2026.4.1113`, whose BNCQ1009 and BNCQ3001 now
+  follow a delegate held in a local to its body. It reports nothing new; the two `BNCQ1002`
+  suppressions on `JsoncEditor.SetValue` and `SetValueEdits` stand as they were.
+- [`docs/publishing.md`](docs/publishing.md) says what the version floor refuses, under "Choosing
+  the version", and its failure table gains the floor's two refusals.
+- `scripts/release-target.cs` and `scripts/repo-conventions.cs` did not change in the template, and
+  are its copies byte for byte.
+
+Build with warnings as errors, 84 of 84 tests, pack, `assert-packages`, and `check`, which conforms,
+as CI runs them. The package does not change.
+
 ## Resume here
 
 Nothing is pending here. ClaudeForge consumes JsonC from nuget.org alone, pinned at `2026.4.1031`
